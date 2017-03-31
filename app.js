@@ -56,24 +56,43 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var Twitter = require('twitter');
+var Twitter = require('twit');
 
-const client = new Twitter({
+const T = new Twitter({
     consumer_key: 'ZYo3KjfE00026JwA8Wrt0oj2G',
     consumer_secret: 'QaqZl4gczZGrVLVHPMGVkZUCZOUYVaM5VKjZzqnrL13GyW3zEX',
-    access_token_key: '2241868928-qLI249NTVeyIthQ1XQRIHCyFjzjWDt6q7O1k4bb',
-    access_token_secret: 'zPxG86Tb3izGgsOOvNqIxgGSUNQLAVFApcGG8SHAOTEzd'
+    access_token: '2241868928-qLI249NTVeyIthQ1XQRIHCyFjzjWDt6q7O1k4bb',
+    access_token_secret: 'zPxG86Tb3izGgsOOvNqIxgGSUNQLAVFApcGG8SHAOTEzd',
+    timeout_ms: 60*1000
 });
 
-client.stream('statuses/filter', {track: 'twitter'},  function(stream) {
-    stream.on('data', function(tweet) {
-        console.log(tweet.text);
-    });
+// T.get('search/tweets', { q: 'I want shoes' }, function(err, data, response) {
+    // console.log('data: ', data)
+// })
 
-    stream.on('error', function(error) {
-        console.log(error);
-    });
 
-});
+T.get('statuses/user_timeline',
+    { screen_name: 'megatricycle', count: 200  }, 
+    function (err, data, response) {
+    // console.log(data.text);
+    console.log(data.map(x => x.text));
+})
+// })
+// var stream = T.stream('statuses/filter', { track: 'play'  })
+
+// stream.on('tweet', function (tweet) {
+    // console.log(tweet.text);
+
+// })
+
+
+// T.post('statuses/update', {status: 'I am a tweet'}, function(error, tweet, response) {
+    // if (!error) {
+        // console.log(tweet);
+    // }
+    // else {
+        // console.error(error)
+    // }
+// });
 
 module.exports = app;
