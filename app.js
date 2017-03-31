@@ -56,5 +56,24 @@ app.use(function(err, req, res, next) {
   });
 });
 
+var Twitter = require('twitter');
+
+const client = new Twitter({
+    consumer_key: 'ZYo3KjfE00026JwA8Wrt0oj2G',
+    consumer_secret: 'QaqZl4gczZGrVLVHPMGVkZUCZOUYVaM5VKjZzqnrL13GyW3zEX',
+    access_token_key: '2241868928-qLI249NTVeyIthQ1XQRIHCyFjzjWDt6q7O1k4bb',
+    access_token_secret: 'zPxG86Tb3izGgsOOvNqIxgGSUNQLAVFApcGG8SHAOTEzd'
+});
+
+client.stream('statuses/filter', {track: 'twitter'},  function(stream) {
+    stream.on('data', function(tweet) {
+        console.log(tweet.text);
+    });
+
+    stream.on('error', function(error) {
+        console.log(error);
+    });
+
+});
 
 module.exports = app;
